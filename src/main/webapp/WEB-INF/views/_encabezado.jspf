@@ -1,0 +1,39 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-caja" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></symbol>
+  <symbol id="i-asignar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 11a4 4 0 100-8 4 4 0 000 8z"/><path d="M3 21v-1a6 6 0 016-6h2"/><path d="M16 17h6M19 14l3 3-3 3"/></symbol>
+  <symbol id="i-inicio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></symbol>
+  <symbol id="i-personas" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20v-1a5.5 5.5 0 015.5-5.5h2A5.5 5.5 0 0115.5 19v1"/><path d="M16 4.5a3.5 3.5 0 010 7M21.5 20v-1a5.5 5.5 0 00-3.5-5"/></symbol>
+  <symbol id="i-llave" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3M14 9l2 2"/></symbol>
+  <symbol id="i-bajar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></symbol>
+  <symbol id="i-buscar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></symbol>
+  <symbol id="i-mas" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-atras" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></symbol>
+</svg>
+<div class="app">
+  <aside class="lateral">
+    <div class="marca">
+      <span class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg></span>
+      Gestor de Activos
+    </div>
+    <nav class="menu" aria-label="Principal">
+      <c:if test="${sessionScope.usuario.administrador}">
+        <a href="${pageContext.request.contextPath}/inicio" class="${pagina == 'inicio' ? 'activo' : ''}"><svg><use href="#i-inicio"/></svg><span>Inicio</span></a>
+        <a href="${pageContext.request.contextPath}/activos" class="${pagina == 'activos' ? 'activo' : ''}"><svg><use href="#i-caja"/></svg><span>Activos</span></a>
+        <a href="${pageContext.request.contextPath}/asignaciones" class="${pagina == 'asignaciones' ? 'activo' : ''}"><svg><use href="#i-asignar"/></svg><span>Asignaciones</span></a>
+        <a href="${pageContext.request.contextPath}/empleados" class="${pagina == 'empleados' ? 'activo' : ''}"><svg><use href="#i-personas"/></svg><span>Empleados</span></a>
+        <a href="${pageContext.request.contextPath}/usuarios" class="${pagina == 'usuarios' ? 'activo' : ''}"><svg><use href="#i-llave"/></svg><span>Usuarios</span></a>
+      </c:if>
+      <c:if test="${!sessionScope.usuario.administrador}">
+        <a href="${pageContext.request.contextPath}/mis-activos" class="activo"><svg><use href="#i-caja"/></svg><span>Mis activos</span></a>
+      </c:if>
+    </nav>
+    <div class="sesion">
+      <strong><c:out value="${empty sessionScope.usuario.nombreCompleto ? sessionScope.usuario.username : sessionScope.usuario.nombreCompleto}"/></strong>
+      <c:out value="${sessionScope.usuario.administrador ? 'Administrador' : 'Empleado'}"/><br>
+      <a href="${pageContext.request.contextPath}/logout">Cerrar sesión</a>
+    </div>
+  </aside>
+  <main class="contenido">
+  <c:if test="${not empty mensaje}"><div class="aviso ok" role="status"><span><c:out value="${mensaje}"/></span><button type="button" aria-label="Cerrar" onclick="this.parentNode.remove()">&times;</button></div></c:if>
+  <c:if test="${not empty error}"><div class="aviso err" role="alert"><span><c:out value="${error}"/></span><button type="button" aria-label="Cerrar" onclick="this.parentNode.remove()">&times;</button></div></c:if>

@@ -1,0 +1,36 @@
+  </main>
+</div>
+<dialog id="confirmar">
+  <div class="d-cuerpo"><h3 id="c-titulo">¿Confirmar?</h3><p id="c-texto"></p></div>
+  <div class="d-pie">
+    <button type="button" class="btn" id="c-no">Cancelar</button>
+    <button type="button" class="btn principal" id="c-si">Confirmar</button>
+  </div>
+</dialog>
+<script>
+(function () {
+  var dlg = document.getElementById('confirmar'), pendiente = null;
+  document.querySelectorAll('form[data-confirmar]').forEach(function (f) {
+    f.addEventListener('submit', function (e) {
+      if (f.dataset.ok === '1') { return; }
+      e.preventDefault(); pendiente = f;
+      document.getElementById('c-titulo').textContent = f.dataset.titulo || '¿Confirmar?';
+      document.getElementById('c-texto').textContent = f.dataset.confirmar;
+      document.getElementById('c-si').textContent = f.dataset.boton || 'Confirmar';
+      if (dlg.showModal) { dlg.showModal(); } else if (window.confirm(f.dataset.confirmar)) { f.dataset.ok = '1'; f.submit(); }
+    });
+  });
+  document.getElementById('c-no').onclick = function () { dlg.close(); };
+  document.getElementById('c-si').onclick = function () { dlg.close(); pendiente.dataset.ok = '1'; pendiente.submit(); };
+  var q = document.getElementById('buscar');
+  if (q) {
+    q.addEventListener('input', function () {
+      var t = q.value.trim().toLowerCase(), visibles = 0;
+      document.querySelectorAll('#tabla tbody tr').forEach(function (tr) {
+        var ok = tr.textContent.toLowerCase().indexOf(t) !== -1; tr.hidden = !ok; if (ok) { visibles++; }
+      });
+      var v = document.getElementById('sin-resultados'); if (v) { v.hidden = visibles !== 0; }
+    });
+  }
+})();
+</script>
